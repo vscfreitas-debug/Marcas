@@ -1,174 +1,113 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Dashboard de Marcas – Doutorado Vicente Santa Cruz</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto – Disseminação de Informações de Marcas</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
 
-<!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        header {
+            background: #004aad;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
 
-<style>
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        margin: 0;
-        background: #f4f4f4;
-        color: #222;
-    }
-    .header {
-        background: #0A3D62;
-        color: white;
-        padding: 25px;
-        text-align: center;
-    }
-    .container {
-        max-width: 1100px;
-        margin: auto;
-        padding: 20px;
-    }
-    .card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-    .card {
-        background: white;
-        padding: 25px;
-        border-radius: 14px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        text-align: center;
-    }
-    .card h2 {
-        font-size: 40px;
-        margin: 10px 0 0 0;
-        font-weight: bold;
-    }
-    .chart-box {
-        margin: 30px 0;
-        background: white;
-        padding: 25px;
-        border-radius: 14px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-</style>
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
 
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #004aad;
+            margin-top: 0;
+        }
+
+        footer {
+            background: #004aad;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        a {
+            color: #004aad;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="header">
-    <h1>Dashboard BI – Sistema de Marcas no Brasil</h1>
-    <h3>Projeto de Doutorado – Vicente Santa Cruz<br>Orientação: Dr. Vinícius Bogéa</h3>
-</div>
+    <header>
+        <h1>Disseminação de Informações de Marcas</h1>
+        <p>Projeto de Doutorado – Academia de Propriedade Intelectual, Inovação e Desenvolvimento (INPI)</p>
+    </header>
 
-<div class="container">
+    <main>
 
-    <!-- KPIs -->
-    <div class="card-grid">
         <div class="card">
-            Total de Pedidos
-            <h2 id="totalPedidos">...</h2>
+            <h2>Sobre o Projeto</h2>
+            <p>
+                Este site tem como objetivo apresentar conteúdos, materiais e resultados relacionados ao projeto
+                <strong>Disseminação de Informações de Marcas</strong>, desenvolvido como parte do Programa de Doutorado
+                em Propriedade Intelectual do INPI.
+            </p>
         </div>
+
         <div class="card">
-            Últimos 12 Meses
-            <h2 id="ultimosMeses">...</h2>
+            <h2>Instituições Envolvidas</h2>
+            <ul>
+                <li>Instituto Nacional da Propriedade Industrial (INPI)</li>
+                <li>Academia de Propriedade Intelectual, Inovação e Desenvolvimento</li>
+                <li>Divisão de Pós-Graduação e Pesquisa</li>
+            </ul>
         </div>
+
         <div class="card">
-            Tempo Médio de Decisão
-            <h2 id="tempoMedio">...</h2>
+            <h2>Repositório no GitHub</h2>
+            <p>Você pode acessar o código-fonte e os arquivos do projeto no link abaixo:</p>
+            <p><a href="https://github.com/vscfreitas-debug/Marcas" target="_blank">➡️ Repositório Marcas no GitHub</a></p>
         </div>
-        <div class="card">
-            Top Classes
-            <h2 id="topClasses">...</h2>
-        </div>
-    </div>
 
-    <!-- Gráficos -->
-    <div class="chart-box">
-        <h3>Evolução Anual de Depósitos</h3>
-        <canvas id="chartAno"></canvas>
-    </div>
+    </main>
 
-    <div class="chart-box">
-        <h3>Distribuição por Classes de Nice</h3>
-        <canvas id="chartClasse"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <h3>Depositantes por Estado</h3>
-        <canvas id="chartUF"></canvas>
-    </div>
-
-</div>
-
-<script>
-// =======================================================================
-// EXEMPLO DE DADOS (você vai substituir pelos seus dados do CSV)
-// =======================================================================
-
-const dadosAno = {
-    labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
-    valores: [140000, 150000, 155000, 160000, 175000, 180000]
-};
-
-const dadosClasse = {
-    labels: ["35", "41", "25", "30", "09"],
-    valores: [45000, 32000, 18000, 15000, 12000]
-};
-
-const dadosUF = {
-    labels: ["SP", "RJ", "MG", "PR", "RS"],
-    valores: [52000, 28000, 24000, 18000, 16000]
-};
-
-// KPIs
-document.getElementById("totalPedidos").innerText = dadosAno.valores.reduce((a,b)=>a+b);
-document.getElementById("ultimosMeses").innerText = 18500; // ajustar depois
-document.getElementById("tempoMedio").innerText = "240 dias"; // ajustar depois
-document.getElementById("topClasses").innerText = "35, 41, 25"; // ajustar depois
-
-// =======================================================================
-// GRÁFICOS
-// =======================================================================
-
-// ANO
-new Chart(document.getElementById("chartAno"), {
-    type: "line",
-    data: {
-        labels: dadosAno.labels,
-        datasets: [{
-            label: "Depósitos",
-            data: dadosAno.valores,
-            borderWidth: 3
-        }]
-    }
-});
-
-// CLASSE
-new Chart(document.getElementById("chartClasse"), {
-    type: "bar",
-    data: {
-        labels: dadosClasse.labels,
-        datasets: [{
-            label: "Depósitos",
-            data: dadosClasse.valores
-        }]
-    }
-});
-
-// ESTADOS
-new Chart(document.getElementById("chartUF"), {
-    type: "bar",
-    data: {
-        labels: dadosUF.labels,
-        datasets: [{
-            label: "Depósitos",
-            data: dadosUF.valores
-        }]
-    }
-});
-
-</script>
+    <footer>
+        © 2025 – Projeto de Doutorado | INPI
+    </footer>
 
 </body>
 </html>
